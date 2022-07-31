@@ -61,9 +61,13 @@ def download_url(url, file_name):
 def get_images(emotes):
     if not emotes:
         return
-    with Pool(processes=multiprocessing.cpu_count() * 2 + 2) as p:
-        images_and_ids = p.map(get_image, list(zip(*emotes))[1])
-        p.join()
+
+    #with Pool(processes=multiprocessing.cpu_count() * 2 + 2) as p:
+    #    images_and_ids = p.async_map(get_image, list(zip(*emotes))[1]).get
+
+    images_and_ids = []
+    for emote_id in list(zip(*emotes))[1]:
+        images_and_ids.append(get_image(emote_id))
 
     return images_and_ids
 
